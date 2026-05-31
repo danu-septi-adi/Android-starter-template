@@ -13,64 +13,157 @@ Keduanya terhubung via **`project-config.json`** — satu file isi konfigurasi, 
 
 ---
 
-## 📦 Cara Install (4 Langkah)
+## 📦 Cara Install
 
-### Prasyarat
-- **Android Studio** Ladybug+ (2024.1+) atau versi terbaru
-- **JDK 17** (built-in di Android Studio)
-- **Android SDK** (API 35 disarankan, minimal API 26)
-- **Git**
+### Prasyarat (Wajib — dipake di kedua metode)
+- **JDK 17** — [Download Temurin JDK 17](https://adoptium.net/temurin/releases/?version=17)
+- **Git** — `winget install Git.Git`
+- **Koneksi internet** — first sync download ~200 MB
 
-### Langkah 1 — Clone repository
+---
+
+### Opsi A: Pakai Android Studio ✅ (Termudah)
+
+| Komponen | Status |
+|----------|--------|
+| Android Studio Ladybug+ | Wajib install |
+| Android SDK | Built-in di AS |
+| JDK | Built-in di AS |
+
+**Langkah:**
+
+1. **Clone repo:**
+   ```bash
+   git clone https://github.com/danu-septi-adi/Android-starter-template.git
+   cd Android-starter-template
+   ```
+
+2. **Edit konfigurasi** — buka `project-config.json`:
+   ```json
+   {
+     "project": {
+       "name": "NamaProject",
+       "appName": "Nama Aplikasi"
+     },
+     "android": {
+       "namespace": "com.perusahaan.app",
+       "applicationId": "com.perusahaan.app",
+       "compileSdk": 35,
+       "minSdk": 26,
+       "targetSdk": 35,
+       "versionCode": 1,
+       "versionName": "1.0.0"
+     },
+     "api": {
+       "baseUrl": "https://api.example.com/",
+       "timeoutSeconds": 30
+     }
+   }
+   ```
+
+3. **Rename package folder:**
+   ```bash
+   # Contoh: namespace com.mycompany.myapp
+   # Rename: app/src/main/java/com/template/app/ → app/src/main/java/com/mycompany/myapp/
+   ```
+
+4. **Buka di Android Studio — File → Open → pilih folder → Run ▶️**
+
+---
+
+### Opsi B: Tanpa Android Studio (CLI-only) 🚀
+
+| Komponen | Ukuran | Install | Wajib? |
+|----------|--------|---------|--------|
+| JDK 17 | ~200 MB | `winget install EclipseAdoptium.Temurin.17.JDK` | ✅ |
+| Android SDK cmdline-tools | ~100 MB | [Download](https://developer.android.com/studio#command-line-tools-only) | ✅ |
+| SDK platform 35 | ~50 MB | via `sdkmanager` | ✅ |
+| SDK build-tools | ~50 MB | via `sdkmanager` | ✅ |
+| platform-tools (ADB) | ~10 MB | via `sdkmanager` | ✅ kalo deploy |
+| Gradle | include di repo | pake `./gradlew` | ✅ |
+| Android Studio | ~1.5 GB | ❌ **Gak perlu** | ❌ |
+
+**Langkah 1 — Install JDK 17:**
+
+```bash
+# Cek versi Java
+java -version  # kalo >= 17, skip
+
+# Install pake winget (Windows)
+winget install EclipseAdoptium.Temurin.17.JDK
+
+# Manual: download dari https://adoptium.net/temurin/releases/?version=17
+```
+
+**Langkah 2 — Install Android SDK command-line tools:**
+
+Download dari: https://developer.android.com/studio#command-line-tools-only
+
+```bash
+# Ekstrak ke C:\Android\cmdline-tools\
+# Struktur final harus:
+#   C:\Android\cmdline-tools\latest\bin\sdkmanager.bat
+
+# Set environment variable
+setx ANDROID_HOME "C:\Android"
+
+# Install SDK components
+sdkmanager "platforms;android-35" "build-tools;35.0.0" "platform-tools"
+
+# Verifikasi ADB
+adb devices
+```
+
+**Langkah 3 — Clone + konfigurasi:**
 
 ```bash
 git clone https://github.com/danu-septi-adi/Android-starter-template.git
 cd Android-starter-template
+
+# Set SDK path
+echo sdk.dir=C\:\\Android > local.properties
+
+# Edit project-config.json (nama, package, API)
+notepad project-config.json
 ```
 
-### Langkah 2 — Setup konfigurasi
+**Langkah 4 — Build APK:**
 
-Buka file **`project-config.json`** di root project, edit semua yang perlu:
-
-```json
-{
-  "project": {
-    "name": "NamaProject",       // → settings.gradle rootProject.name
-    "appName": "Nama Aplikasi"   // → title di Android launcher
-  },
-  "android": {
-    "namespace": "com.perusahaan.app",     // → source package
-    "applicationId": "com.perusahaan.app", // → Play Store ID
-    "compileSdk": 35,      // versi SDK kompilasi
-    "minSdk": 26,          // minimal Android versi berapa
-    "targetSdk": 35,       // target SDK
-    "versionCode": 1,      // naikin tiap upload Play Store
-    "versionName": "1.0.0" // versi yang keliatan ke user
-  },
-  "api": {
-    "baseUrl": "https://api.example.com/", // ganti dengan API lo
-    "timeoutSeconds": 30
-  }
-}
+```bash
+ANDROID_HOME=C:/Android ./gradlew assembleDebug
 ```
 
-Template langsung pake **JSONPlaceholder** sebagai demo API — ganti `baseUrl` ke endpoint lo sendiri.
+**Langkah 5 — Install ke device:**
 
-### Langkah 3 — Rename package folder
+```bash
+# Connect device via USB (enable USB debugging)
+adb install -r app/build/outputs/apk/debug/app-debug.apk
 
-Rename folder `app/src/main/java/com/template/app/` → sesuai `android.namespace` di config.
+# Kalo udah terinstall sebelumnya, cukup launch:
+adb shell am start -n com.yourpackage.debug/com.yourpackage.MainActivity
+```
 
-> **Contoh:** namespace `com.mycompany.myapp` → folder jadi `app/src/main/java/com/mycompany/myapp/`
+**Kalo build error `mipmap/ic_launcher not found`** — jalankan dari direktori yang bener (root project, bukan `app/`). Error ini udah di-fix di template.
 
-### Langkah 4 — Buka di Android Studio
+---
 
-1. Buka **Android Studio**
-2. **File → Open** → pilih folder `Android-starter-template`
-3. Android Studio akan otomatis:
-   - Generate file `local.properties` (path SDK)
-   - Download **Gradle 8.11.1** (first sync butuh internet)
-   - Download dependencies (first sync butuh internet ~2-5 menit)
-4. Klik **Run ▶️** atau tekan **Shift+F10**
+### Konfigurasi `project-config.json` (Common buat kedua opsi)
+
+| Field | Fungsi | Contoh |
+|-------|--------|--------|
+| `project.name` | Nama project (settings.gradle) | `MyApp` |
+| `project.appName` | Nama di launcher Android | `My App` |
+| `android.namespace` | Package name / source folder | `com.perusahaan.app` |
+| `android.applicationId` | ID unik di Play Store | `com.perusahaan.app` |
+| `android.compileSdk` | SDK versi buat compile | `35` |
+| `android.minSdk` | Minimal Android version | `26` (Android 8) |
+| `android.targetSdk` | Target Android version | `35` |
+| `android.versionCode` | Build number (integer) | `1` |
+| `android.versionName` | Versi yang keliatan user | `1.0.0` |
+| `api.baseUrl` | Base URL REST API | `https://api.example.com/` |
+| `api.timeoutSeconds` | Timeout HTTP request | `30` |
+
+> **Default API:** `https://jsonplaceholder.typicode.com/` — demo API gratis. Ganti kalo pake backend sendiri.
 
 ---
 
