@@ -13,7 +13,81 @@ Keduanya terhubung via **`project-config.json`** — satu file isi konfigurasi, 
 
 ---
 
-## Cara kerja — gambaran besar
+## 📦 Cara Install (4 Langkah)
+
+### Prasyarat
+- **Android Studio** Ladybug+ (2024.1+) atau versi terbaru
+- **JDK 17** (built-in di Android Studio)
+- **Android SDK** (API 35 disarankan, minimal API 26)
+- **Git**
+
+### Langkah 1 — Clone repository
+
+```bash
+git clone https://github.com/danu-septi-adi/Android-starter-template.git
+cd Android-starter-template
+```
+
+### Langkah 2 — Setup konfigurasi
+
+Buka file **`project-config.json`** di root project, edit semua yang perlu:
+
+```json
+{
+  "project": {
+    "name": "NamaProject",       // → settings.gradle rootProject.name
+    "appName": "Nama Aplikasi"   // → title di Android launcher
+  },
+  "android": {
+    "namespace": "com.perusahaan.app",     // → source package
+    "applicationId": "com.perusahaan.app", // → Play Store ID
+    "compileSdk": 35,      // versi SDK kompilasi
+    "minSdk": 26,          // minimal Android versi berapa
+    "targetSdk": 35,       // target SDK
+    "versionCode": 1,      // naikin tiap upload Play Store
+    "versionName": "1.0.0" // versi yang keliatan ke user
+  },
+  "api": {
+    "baseUrl": "https://api.example.com/", // ganti dengan API lo
+    "timeoutSeconds": 30
+  }
+}
+```
+
+Template langsung pake **JSONPlaceholder** sebagai demo API — ganti `baseUrl` ke endpoint lo sendiri.
+
+### Langkah 3 — Rename package folder
+
+Rename folder `app/src/main/java/com/template/app/` → sesuai `android.namespace` di config.
+
+> **Contoh:** namespace `com.mycompany.myapp` → folder jadi `app/src/main/java/com/mycompany/myapp/`
+
+### Langkah 4 — Buka di Android Studio
+
+1. Buka **Android Studio**
+2. **File → Open** → pilih folder `Android-starter-template`
+3. Android Studio akan otomatis:
+   - Generate file `local.properties` (path SDK)
+   - Download **Gradle 8.11.1** (first sync butuh internet)
+   - Download dependencies (first sync butuh internet ~2-5 menit)
+4. Klik **Run ▶️** atau tekan **Shift+F10**
+
+---
+
+## ✅ Hasil
+
+Jika berhasil, di device/emulator akan muncul:
+
+- **Top bar:** "Template App"
+- **List:** Menampilkan data dari JSONPlaceholder API
+- **Tap item:** Navigasi ke halaman detail
+- **Refresh:** Tombol refresh di top bar
+
+Template sudah teruji: **build sukses, install via ADB, API call berjalan, 0 crash.**
+
+---
+
+## 🚀 Cara Kerja — Gambaran Besar
 
 ```
 Ide kamu
@@ -48,23 +122,16 @@ RUNNING APP 🚀
 
 ---
 
-## Quick start (tanpa AI workflow)
+## 🧠 Pakai AI Workflow (Recommended)
 
-1. Buka `project-config.json` — edit nama, package, API base URL
-2. Rename folder `com/template/app/` → sesuai namespace baru
-3. Buka di **Android Studio**, sync Gradle, run
-
-Template demo langsung jalan pake JSONPlaceholder API.
-
----
-
-## Quick start (pakai AI workflow — recomended)
-
-Buka file `Aisetup/docs/userplan.md`, isi deskripsi aplikasi kamu, lalu kirim ke AI. AI akan pandu dari Phase 1 sampai kode jadi.
+1. Buka file **`Aisetup/docs/userplan.md`**
+2. Isi deskripsi aplikasi kamu
+3. Kirim ke AI (Claude, ChatGPT, dll)
+4. AI akan pandu dari **Phase 1** sampai kode jadi
 
 ---
 
-## Struktur lengkap
+## 📁 Struktur Lengkap
 
 ```
 ├── project-config.json          ← SATU FILE KONFIGURASI
@@ -112,7 +179,7 @@ Buka file `Aisetup/docs/userplan.md`, isi deskripsi aplikasi kamu, lalu kirim ke
 
 ---
 
-## Config mapping
+## ⚙️ Config Mapping
 
 | `project-config.json` | Dipakai di |
 |---|---|
@@ -127,22 +194,48 @@ Buka file `Aisetup/docs/userplan.md`, isi deskripsi aplikasi kamu, lalu kirim ke
 
 ---
 
-## Tech stack
+## 🛠 Tech Stack
 
-| Library | Versi |
-|---------|-------|
-| Kotlin | 2.1.0 |
-| Compose BOM | 2024.12 |
-| Material3 | built-in |
-| Navigation Compose | 2.8.5 |
-| Retrofit + OkHttp | 2.11.0 / 4.12.0 |
-| Kotlin Serialization | 1.7.3 |
-| Coil | 2.7.0 |
-| Coroutines | 1.9.0 |
-| Lifecycle ViewModel | 2.8.7 |
+| Library | Versi | Fungsi |
+|---------|-------|--------|
+| Kotlin | 2.1.0 | Bahasa pemrograman |
+| Compose BOM | 2024.12 | UI toolkit |
+| Material3 | built-in | Design system (Material You) |
+| Navigation Compose | 2.8.5 | Screen routing |
+| Retrofit + OkHttp | 2.11.0 / 4.12.0 | HTTP client + logging |
+| Kotlin Serialization | 1.7.3 | JSON parsing (nullable-safe) |
+| Coil | 2.7.0 | Image loading |
+| Coroutines | 1.9.0 | Async operations |
+| Lifecycle ViewModel | 2.8.7 | State management |
 
 ---
 
-## License
+## 📸 Screenshot
 
-MIT
+App sudah teruji di device fisik (Realme, Android 14):
+
+- ✅ Build sukses (0 warning)
+- ✅ Install via ADB berhasil
+- ✅ API call ke JSONPlaceholder sukses (100 items)
+- ✅ Navigasi list → detail jalan
+- ✅ Dark mode support (ikut system)
+- ✅ Dynamic color (Android 12+)
+- ✅ 0 crash / FATAL
+
+---
+
+## 🔧 Troubleshooting
+
+| Masalah | Solusi |
+|---------|--------|
+| `SDK location not found` | Android Studio akan generate `local.properties` otomatis. Atau buat manual: `sdk.dir=C\:\\Users\\[user]\\AppData\\Local\\Android\\Sdk` |
+| `Gradle sync failed` | Cek koneksi internet. First sync download Gradle 8.11.1 (~100MB) |
+| `Namespace wrong` | Ganti `android.namespace` di `project-config.json` + rename folder package |
+| `API not loading` | Cek `baseUrl` di config, pastikan API nyala. Default pake JSONPlaceholder |
+| `App crash` | Jalankan via Android Studio, cek logcat. Laporkan issue ke GitHub |
+
+---
+
+## 📄 License
+
+MIT — bebas dipake untuk project apapun.
