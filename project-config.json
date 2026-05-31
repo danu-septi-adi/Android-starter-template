@@ -1,0 +1,47 @@
+{
+  "//": "██████████████████████████████████████████████████████",
+  "//_": "██  SATU FILE UNTUK SEMUA KONFIGURASI PROJECT     ██",
+  "//__": "██  Semua build file baca dari sini.              ██",
+  "//___": "██  Output workflow AI → Aisetup/docs/  ← isi ini ██",
+  "//____": "██████████████████████████████████████████████████████",
+
+  "project": {
+    "name": "TemplateApp",
+    "appName": "TemplateApp",
+    "description": ""
+  },
+
+  "android": {
+    "namespace": "com.template.app",
+    "applicationId": "com.template.app",
+    "compileSdk": 35,
+    "minSdk": 26,
+    "targetSdk": 35,
+    "versionCode": 1,
+    "versionName": "1.0.0"
+  },
+
+  "api": {
+    "baseUrl": "https://jsonplaceholder.typicode.com/",
+    "timeoutSeconds": 30
+  },
+
+  "//_features": "── DIISI OLEH AI SAAT WORKFLOW PHASE 1-2 ──",
+  "features": {
+    "auth": false,
+    "onboarding": false,
+    "splash": false,
+    "darkMode": true,
+    "multiLanguage": false,
+    "localDb": false,
+    "pushNotification": false,
+    "analytics": false
+  },
+
+  "//__notes": "── CATATAN DEVELOPMENT ──",
+  "notes": {
+    "workflowPhase": 0,
+    "lastBlueprint": "",
+    "todo": ""
+  }
+}

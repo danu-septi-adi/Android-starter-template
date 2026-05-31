@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Simple "T" letter for TemplateApp -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M36,36h36v6h-15v30h-6v-30h-15z"/>
+</vector>

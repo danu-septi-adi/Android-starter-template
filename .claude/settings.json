@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p \"c:/Tempplate/Kotlin + Jetpack Compose starterpack/app/src/main/java/com/template/app/{navigation,ui/{theme,components,screens/{home,detail}},data/{model,remote,repository},di}\" \"c:/Tempplate/Kotlin + Jetpack Compose starterpack/app/src/main/res/{values,drawable}\" \"c:/Tempplate/Kotlin + Jetpack Compose starterpack/gradle/wrapper\")",
+      "PowerShell(Get-ChildItem -Recurse \"c:/Tempplate/Kotlin + Jetpack Compose starterpack\" | Where-Object { !$_.PSIsContainer } | ForEach-Object { $_.FullName.Replace\\(\"c:\\\\Tempplate\\\\Kotlin + Jetpack Compose starterpack\\\\\", \"\"\\) })",
+      "Bash(adb devices *)",
+      "Bash(java -version)",
+      "Read(//c/Android/**)",
+      "Bash(where gradle *)",
+      "Bash(curl -sL \"https://services.gradle.org/distributions/gradle-8.11.1-bin.zip\" -o /tmp/gradle-8.11.1-bin.zip)",
+      "Bash(unzip -q /tmp/gradle-8.11.1-bin.zip -d /tmp/gradle-8.11.1)",
+      "Bash(/tmp/gradle-8.11.1/gradle-8.11.1/bin/gradle wrapper *)",
+      "Bash(ANDROID_HOME=C:/Android ./gradlew assembleDebug)",
+      "Bash(adb -s 089903729G004805 shell am start -n com.template.app.debug/com.template.app.MainActivity)",
+      "Bash(git init *)",
+      "Bash(git add *)",
+      "Bash(git commit -m 'Initial commit: Android Kotlin + Jetpack Compose starter template with AI workflow *)"
+    ],
+    "additionalDirectories": [
+      "c:\\Tempplate\\Kotlin + Jetpack Compose starterpack\\app\\src\\main\\java\\com\\template\\app\\{navigation,ui\\{theme,components,screens\\{home,detail}},data"
+    ]
+  }
+}
